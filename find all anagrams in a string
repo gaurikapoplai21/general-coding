@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) 
+    {
+        vector<int> ans;
+        vector<int> hash(26,0);
+        vector<int> phash(26,0);
+        int window = p.size();
+        int len = s.size();
+        if(s.size()<p.size())
+        {
+            return ans;
+        }
+        
+        int beg = 0;
+        int end = 0;
+        cout<<"ho";
+        while(end<window)
+        {
+            phash[p[end] - 'a'] += 1;
+            hash[s[end] - 'a'] += 1;
+            end++;
+        }
+        end--;
+        //cout<<"ho";
+        while(end<len)
+        {
+            if(hash==phash)
+            {
+                ans.push_back(beg);
+                cout<<beg;
+            }
+            hash[s[beg] - 'a'] -= 1;
+            beg++;
+            end++;
+            if(end < len)
+            {
+                hash[s[end] - 'a'] += 1;
+            }
+        }
+        return ans;
+        
+        
+        
+    }
+};
