@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) 
+    {
+        map<vector<int>,vector<string>> ans;
+        for(string s: strs)
+        {
+            vector<int> hash(26,0);
+            for(char c:s)
+            {
+                hash[c-'a']+=1;
+            }
+            ans[hash].push_back(s);
+        }
+        vector<vector<string>> v;
+        for(auto i:ans)
+        {
+            v.push_back(i.second);
+        }
+        return v;
+    }
+};
