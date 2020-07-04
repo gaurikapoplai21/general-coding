@@ -1,0 +1,142 @@
+#include <bits/stdc++.h>
+
+typedef long long int lli;
+using namespace std;
+lli find_ans(unordered_map<lli, lli> mymap1, unordered_map<lli, lli> mymap2, lli count, set<lli> s, lli smallest)
+{
+    for (auto i : mymap1)
+    {
+        if (i.second & 1)
+        {
+            //cout << i.first;
+            return -1;
+        }
+    }
+    for (auto j : mymap2)
+    {
+        if (j.second & 1)
+        {
+            //cout << j.first;
+            return -1;
+        }
+    }
+    lli ans = 0;
+    for (auto k : s)
+    {
+        lli r = max(mymap1[k], mymap2[k]);
+        if (r / 2 <= count)
+        {
+            //cout << "ho";
+            if (k * (r / 2) > 2 * smallest * (r / 2))
+            {
+                ans += (2 * smallest * (r / 2));
+                //cout << ans << " ";
+            }
+            else
+            {
+                ans += k * (r / 2);
+                //cout << ans << " ";
+            }
+
+            count -= r / 2;
+        }
+        else
+        {
+            if (k * count > 2 * count * smallest)
+            {
+                ans += (smallest * count * 2);
+                //cout << ans << " ";
+            }
+            else
+            {
+                ans += (k * count);
+                //cout << ans << " ";
+            }
+
+            count = 0;
+        }
+
+        if (count == 0)
+        {
+            return ans;
+        }
+    }
+    return ans;
+}
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        lli n;
+        cin >> n;
+        vector<lli> a;
+        vector<lli> b;
+        lli x;
+        for (lli i = 0; i < n; i++)
+        {
+            cin >> x;
+            a.push_back(x);
+        }
+        for (lli i = 0; i < n; i++)
+        {
+            cin >> x;
+            b.push_back(x);
+        }
+        sort(a.begin(), a.end());
+        sort(b.begin(), b.end());
+        unordered_map<lli, lli> mymap1;
+        unordered_map<lli, lli> mymap2;
+        lli i = 0;
+        lli j = 0;
+        lli count = 0;
+        set<lli> s;
+        while (i < n && j < n)
+        {
+            if (a[i] == b[j])
+            {
+                i++;
+                j++;
+            }
+            else if (a[i] > b[j])
+            {
+                mymap1[b[j]] += 1;
+                j++;
+                count++;
+                s.insert(b[j]);
+            }
+            else if (b[j] > a[i])
+            {
+                mymap2[a[i]] += 1;
+                i++;
+                count++;
+                s.insert(a[i]);
+            }
+        }
+        while (i < n)
+        {
+            mymap1[a[i]] += 1;
+            i++;
+            count++;
+            s.insert(a[i]);
+        }
+        while (j < n)
+        {
+            mymap2[b[j]] += 1;
+            j++;
+            count++;
+            s.insert(b[j]);
+        }
+        lli ans = 0;
+        //cout << count << " ";
+        count = count / 4;
+        lli smallest = a[0] < b[0] ? a[0] : b[0];
+
+        ans = find_ans(mymap1, mymap2, count, s, smallest);
+        cout << ans << endl;
+    }
+}
