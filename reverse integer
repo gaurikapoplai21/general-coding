@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int reverse(int x) 
+    {
+        long long int k = abs(x);
+        long long int index = 1;
+        string s = to_string(k);
+        //cout<<s<<" ";
+        long long int sum = 0;
+        for(char& c:s)
+        {
+            int x = c - '0';
+            sum += (x*index);
+            index = index*10;
+        }
+        if(sum>INT_MAX)
+        {
+            return 0;
+        }
+        if(x<0)
+        {
+            sum *= (-1);
+        }
+        
+        return sum;
+        
+    }
+};
