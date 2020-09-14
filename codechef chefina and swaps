@@ -1,0 +1,92 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+typedef long long int lli;
+
+int main()
+{
+    lli t;
+    cin >> t;
+    while (t--)
+    {
+        lli n;
+        cin >> n;
+        lli totsum = (n * (n + 1)) / 2;
+
+        if (totsum % 2 != 0)
+        {
+
+            cout << 0 << "\n";
+        }
+        else
+        {
+            lli halfsum = totsum / 2;
+            //cout << halfsum;
+            lli start = 1;
+            lli end = n;
+            lli ans = 0;
+            lli closest = -1;
+            while (start <= end)
+            {
+                lli mid = start + (end - start) / 2;
+                //cout << ((mid - 1) * mid) / 2 << " " << (mid + 1 * (mid + 2)) / 2;
+                if (((((mid - 1) * mid) / 2) < halfsum) && ((((mid + 1) * (mid + 2)) / 2) > halfsum) && (mid * (mid + 1)) / 2 <= halfsum)
+                {
+                    //cout << "ho";
+                    closest = mid;
+                    break;
+                }
+
+                else if ((mid * (mid + 1)) / 2 > halfsum)
+                {
+                    end = mid - 1;
+                }
+                else
+                {
+                    start = mid + 1;
+                }
+            }
+            //cout << closest << " ";
+            if ((closest * (closest + 1)) / 2 == halfsum)
+            {
+                ans += ((closest * (closest - 1)) / 2) + ((n - closest) * (n - closest - 1)) / 2;
+                --closest;
+            }
+            while (halfsum - ((closest * (closest + 1)) / 2) + 1 <= n)
+            {
+                lli diff = halfsum - ((closest * (closest + 1)) / 2);
+                if (diff + 1 <= n && diff + 1 > closest)
+                {
+                    ans += min(closest, n - diff);
+                }
+                else if (diff + 1 < closest)
+                {
+                    ans += min(n - closest, diff);
+                }
+
+                --closest;
+            }
+
+            /*while (sum + i < halfsum)
+            {
+
+                sum += i;
+                lli diff = halfsum - sum;
+                if (diff + 1 <= n && diff + 1 > i)
+                {
+                    ans += min(i, n - diff);
+                    
+                   
+                }
+                else if (diff + 1 < i)
+                {
+                    ans += min(n - i, diff);
+                          
+                }
+                ++i;
+            }*/
+
+            cout << ans << "\n";
+        }
+    }
+}
